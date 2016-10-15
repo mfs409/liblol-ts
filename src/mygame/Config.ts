@@ -1,128 +1,102 @@
-// /**
-//  * This is free and unencumbered software released into the public domain.
-//  *
-//  * Anyone is free to copy, modify, publish, use, compile, sell, or
-//  * distribute this software, either in source code form or as a compiled
-//  * binary, for any purpose, commercial or non-commercial, and by any
-//  * means.
-//  *
-//  * In jurisdictions that recognize copyright laws, the author or authors
-//  * of this software dedicate any and all copyright interest in the
-//  * software to the public domain. We make this dedication for the benefit
-//  * of the public at large and to the detriment of our heirs and
-//  * successors. We intend this dedication to be an overt act of
-//  * relinquishment in perpetuity of all present and future rights to this
-//  * software under copyright law.
-//  *
-//  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-//  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-//  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-//  * IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
-//  * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-//  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-//  * OTHER DEALINGS IN THE SOFTWARE.
-//  *
-//  * For more information, please refer to <http://unlicense.org>
-//  */
+// TODO: conversion of this file is not yet complete
 
-// package com.me.mylolgame;
+/**
+ * GameConfig gives us a mechanism for telling the framework how it should
+ * configure and run our game.
+ */
+class GameConfig extends LOL.Config {
+    /**
+     * Set the configuration of the game
+     */
+    public configure() {
+        this.width = 960;
+        this.height = 640;
+        this.numLevels = 93;
+        this.enableVibration = true;
+        this.unlockAllLevels = true;
+        this.showDebugBoxes = true;
+        this.defaultFontFace = "arial";
+        this.defaultFontSize = 32;
+        this.defaultFontColor = [0, 0, 0];
+        this.defaultWinText = "Good Job";
+        this.defaultLoseText = "Try Again";
+        this.gameTitle = "My Lol Game";
+        this.enableChooser = true;
 
-// import edu.lehigh.cse.lol.Lol;
-// import edu.lehigh.cse.lol.Media;
+        // The code for building the playable levels
+        // this.levelBuilder = 
+        // this.splashBuilder =
+        // this.chooserBuilder =
+        // this.helpBuilder =
+        // this.storeBuilder =
 
-// /**
-//  * The starting point for a Lol game is right here. This code does two important
-//  * configuration tasks: it loads all the assets (images and sounds) used by the
-//  * game, and it tells the Lol engine about all of the other configuration that
-//  * needs to be done.
-//  *
-//  * Be sure to look at the Levels.java file for how each level of the game is
-//  * drawn, as well as Splash.java, Chooser.java, Help.java, and Store.java.
-//  */
-// public class MyGame extends Lol {
-//     /**
-//      * Set up all the global configuration options for the game
-//      */
-//     @Override
-//     public void configure() {
-//         // to see documentation for any of these variables, hover your mouse
-//         // over the word on the left side of the equals sign
-//         mWidth = 960;
-//         mHeight = 640;
-//         mNumLevels = 93;
-//         mEnableVibration = true;
-//         mUnlockAllLevels = true;
-//         mShowDebugBoxes = true;
-//         mStorageKey = "com.me.mylolgame.prefs";
-//         mDefaultFontFace = "arial.ttf";
-//         mDefaultFontSize = 32;
-//         mDefaultFontRed = 0;
-//         mDefaultFontGreen = 0;
-//         mDefaultFontBlue = 0;
-//         mDefaultWinText = "Good Job";
-//         mDefaultLoseText = "Try Again";
-//         mGameTitle = "My Lol Game";
-//         mEnableChooser = true;
+        // The images used by this game
+        this.imgNames = [
+            "assets/audio_off.png",
+            "assets/audio_on.png",
+            "assets/back.png",
+            "assets/backarrow.png",
+            "assets/ball.png",
+            "assets/blueball.png",
+            "assets/box.jpg",
+            "assets/chooser.png",
+            "assets/colorstar1.png",
+            "assets/colorstar2.png",
+            "assets/colorstar3.png",
+            "assets/colorstar4.png",
+            "assets/colorstar5.png",
+            "assets/colorstar6.png",
+            "assets/colorstar7.png",
+            "assets/colorstar8.png",
+            "assets/fade.png",
+            "assets/fliplegstar1.png",
+            "assets/fliplegstar2.png",
+            "assets/fliplegstar3.png",
+            "assets/fliplegstar4.png",
+            "assets/fliplegstar5.png",
+            "assets/fliplegstar6.png",
+            "assets/fliplegstar7.png",
+            "assets/fliplegstar8.png",
+            "assets/flystar1.png",
+            "assets/flystar2.png",
+            "assets/front.png",
+            "assets/greenball.png",
+            "assets/greyball.png",
+            "assets/leftarrow.png",
+            "assets/legstar1.png",
+            "assets/legstar2.png",
+            "assets/legstar3.png",
+            "assets/legstar4.png",
+            "assets/legstar5.png",
+            "assets/legstar6.png",
+            "assets/legstar7.png",
+            "assets/legstar8.png",
+            "assets/leveltile.png",
+            "assets/mid.png",
+            "assets/msg1.png",
+            "assets/msg2.png",
+            "assets/mustardball.png",
+            "assets/purpleball.png",
+            "assets/red.png",
+            "assets/redball.png",
+            "assets/rightarrow.png",
+            "assets/splash.png",
+            "assets/starburst1.png",
+            "assets/starburst2.png",
+            "assets/starburst3.png",
+            "assets/starburst4.png",
+        ];
 
-//         // don't change these lines unless you know what you are doing
-//         mLevels = new Levels();
-//         mChooser = new Chooser();
-//         mHelp = new Help();
-//         mSplash = new Splash();
-//         mStore = new Store();
-//     }
-
-//     /**
-//      * Load all the images and sounds used by our game
-//      */
-//     @Override
-//     public void loadResources() {
-//         // load regular (non-animated) images
-//         Media.registerImage("greenball.png");
-//         Media.registerImage("mustardball.png");
-//         Media.registerImage("red.png");
-//         Media.registerImage("leftarrow.png");
-//         Media.registerImage("rightarrow.png");
-//         Media.registerImage("backarrow.png");
-//         Media.registerImage("redball.png");
-//         Media.registerImage("blueball.png");
-//         Media.registerImage("purpleball.png");
-//         Media.registerImage("msg1.png");
-//         Media.registerImage("msg2.png");
-//         Media.registerImage("fade.png");
-//         Media.registerImage("greyball.png");
-//         Media.registerImage("leveltile.png");
-//         Media.registerImage("audio_on.png");
-//         Media.registerImage("audio_off.png");
-
-//         // load the image we show on the main screen
-//         Media.registerImage("splash.png");
-
-//         // load the image we show on the chooser screen
-//         Media.registerImage("chooser.png");
-
-//         // load background images
-//         Media.registerImage("mid.png");
-//         Media.registerImage("front.png");
-//         Media.registerImage("back.png");
-
-//         // load animated images (a.k.a. Sprite Sheets)
-//         Media.registerAnimatableImage("stars.png", 8, 1);
-//         Media.registerAnimatableImage("stars_flipped.png", 8, 1);
-//         Media.registerAnimatableImage("flystar.png", 2, 1);
-//         Media.registerAnimatableImage("starburst.png", 4, 1);
-//         Media.registerAnimatableImage("colorstar.png", 8, 1);
-
-//         // load sounds
-//         Media.registerSound("hipitch.ogg");
-//         Media.registerSound("lowpitch.ogg");
-//         Media.registerSound("losesound.ogg");
-//         Media.registerSound("slowdown.ogg");
-//         Media.registerSound("woowoowoo.ogg");
-//         Media.registerSound("fwapfwap.ogg");
-//         Media.registerSound("winsound.ogg");
-
-//         // load background music
-//         Media.registerMusic("tune.ogg", true);
-//     }
-// }
+        // The sounds used by this game
+        this.soundNames = [
+            "assets/fwapfwap.ogg",
+            "assets/hipitch.ogg",
+            "assets/losesound.ogg",
+            "assets/lowpitch.ogg",
+            "assets/slowdown.ogg",
+            "assets/tune.ogg",
+            "assets/winsound.ogg",
+            "assets/woowoowoo.ogg",
+        ];
+    }
+}

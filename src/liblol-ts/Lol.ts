@@ -1,38 +1,131 @@
-// /**
-//  * This is free and unencumbered software released into the public domain.
-//  *
-//  * Anyone is free to copy, modify, publish, use, compile, sell, or
-//  * distribute this software, either in source code form or as a compiled
-//  * binary, for any purpose, commercial or non-commercial, and by any
-//  * means.
-//  *
-//  * In jurisdictions that recognize copyright laws, the author or authors
-//  * of this software dedicate any and all copyright interest in the
-//  * software to the public domain. We make this dedication for the benefit
-//  * of the public at large and to the detriment of our heirs and
-//  * successors. We intend this dedication to be an overt act of
-//  * relinquishment in perpetuity of all present and future rights to this
-//  * software under copyright law.
-//  *
-//  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-//  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-//  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-//  * IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
-//  * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-//  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-//  * OTHER DEALINGS IN THE SOFTWARE.
-//  *
-//  * For more information, please refer to <http://unlicense.org>
-//  */
+module LOL {
 
-// package edu.lehigh.cse.lol;
+    /**
+     * Provide configuration for a game.  The configuration takes three parts.  
+     * First, there are the default values for things like screen size, 
+     * on-screen text, etc.  Second, there are the names of any media files to 
+     * load.  Third, there are a few ScreenManager objects, which explain how to
+     * build the interactive parts of the game.
+     */
+    export abstract class Config {
+        /**
+         * The number of pixels per meter.  You probably don't want to change 
+         * this  
+         */
+        public PIXELS_PER_METER: number = 20;
 
-// import com.badlogic.gdx.Game;
-// import com.badlogic.gdx.Gdx;
-// import com.badlogic.gdx.Input.Keys;
-// import com.badlogic.gdx.utils.Timer;
+        /**
+         * The width of the screen
+         */
+        public width: number = 0;
 
-// import java.util.TreeMap;
+        /**
+         * The height of the screen
+         */
+        public height: number = 0;
+
+        /**
+         * The names of all images to load
+         */
+        public imgNames: string[] = null;
+
+        /**
+         * The names of all sound files to load
+         */
+        public soundNames: string[] = null;
+
+        /**
+         * The total number of levels.  We need this in order to know what to
+         * do when the last level is completed.
+         */
+        public numLevels: number = 1;
+
+        /**
+         * Should the phone vibrate on certain events?
+         */
+        public enableVibration: boolean = true;
+
+        /**
+         * Should all levels be unlocked?
+         */
+        public unlockAllLevels: boolean = false;
+
+        /**
+         * This is a debug feature, to help see the physics behind every Actor
+         */
+        public showDebugBoxes: boolean = true;
+
+        /**
+         * When drawing text, this is the default font to use
+         */
+        public defaultFontFace: string = "arial";
+
+        /**
+         * When drawing text, this is the default font size to use
+         */
+        public defaultFontSize: number = 32;
+
+        /**
+         * When drawing text, this is the default font color.  Colors consist
+         * of three integers between 0 and 255, corresponding to red, green, and
+         * blue components of the color.
+         */
+        public defaultFontColor: number[] = [0, 255, 0];
+
+        /**
+         * Default text to display when the level is won.
+         */
+        public defaultWinText: string = "Default Win Text";
+
+        /**
+         * Default text to display when the level is lost
+         */
+        public defaultLoseText: string = "Default Lose Text";
+
+        /**
+         * Title of the game (for desktop mode)
+         * 
+         * TODO: do we still need this?
+         */
+        public gameTitle: string = "Game Title";
+
+        /**
+         * Should the level chooser be activated?
+         */
+        public enableChooser: boolean = true;
+
+        /**
+         * The ScreenManager that will be used to draw the levels of the game
+         */
+        public levelBuilder: ScreenManager = null;
+
+        /**
+         * The level chooser is drawn by this object
+         */
+        public chooserBuilder: ScreenManager = null;
+
+        /**
+         * The help screen is drawn by this object
+         */
+        public helpBuilder: ScreenManager = null;
+
+        /**
+         * The opening (splash) screen is drawn by this object
+         */
+        public splashBuilder: ScreenManager = null;
+
+        /**
+         * The store is drawn by this object
+         */
+        public storeBuilder: ScreenManager = null;
+
+        /**
+         * The configure() function is called to set the game configuration
+         */
+        public abstract configure();
+    }
+}
+
 
 // /**
 //  * A Lol object is the outermost container for all of the functionality of the
@@ -68,99 +161,12 @@
 //      * The current level being shown
 //      */
 //     public Level mCurrentLevel;
-//     /**
-//      * The default screen width (note: it will be stretched appropriately on a
-//      * phone)
-//      */
-//     public int mWidth;
-//     /**
-//      * The default screen height (note: it will be stretched appropriately on a
-//      * phone)
-//      */
-//     public int mHeight;
-//     /**
-//      * This is a debug feature, to help see the physics behind every Actor
-//      */
-//     public boolean mShowDebugBoxes;
-//     /**
-//      * Title of the game (for desktop mode)
-//      */
-//     public String mGameTitle;
 
-//     /*
-//      * GAME CONFIGURATION VARIABLES
-//      *
-//      * These get set in MyGame.java
-//      */
-//     /**
-//      * The total number of levels. This is only useful for knowing what to do
-//      * when the last level is completed.
-//      */
-//     protected int mNumLevels;
-//     /**
-//      * Should the phone vibrate on certain events?
-//      */
-//     protected boolean mEnableVibration;
-//     /**
-//      * Should all levels be unlocked?
-//      */
-//     protected boolean mUnlockAllLevels;
 //     /**
 //      * A per-game string, to use for storing information on an Android device
 //      */
 //     protected String mStorageKey;
-//     /**
-//      * Default font face
-//      */
-//     protected String mDefaultFontFace;
-//     /**
-//      * Default font size
-//      */
-//     protected int mDefaultFontSize;
-//     /**
-//      * Red component of default font color
-//      */
-//     protected int mDefaultFontRed;
-//     /**
-//      * Green component of default font color
-//      */
-//     protected int mDefaultFontGreen;
-//     /**
-//      * Blue component of default font color
-//      */
-//     protected int mDefaultFontBlue;
-//     /**
-//      * Default text to display when a level is won
-//      */
-//     protected String mDefaultWinText;
-//     /**
-//      * Default text to display when a level is lost
-//      */
-//     protected String mDefaultLoseText;
-//     /**
-//      * Should the level chooser be activated?
-//      */
-//     protected boolean mEnableChooser;
-//     /**
-//      * The levels of the game are drawn by this object
-//      */
-//     protected ScreenManager mLevels;
-//     /**
-//      * The chooser is drawn by this object
-//      */
-//     protected ScreenManager mChooser;
-//     /**
-//      * The help screens are drawn by this object
-//      */
-//     protected ScreenManager mHelp;
-//     /**
-//      * The splash screen is drawn by this object
-//      */
-//     protected ScreenManager mSplash;
-//     /**
-//      * The store is drawn by this object
-//      */
-//     protected ScreenManager mStore;
+
 //     /**
 //      * The current mode of the program (from among the above choices)
 //      */
