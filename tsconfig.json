@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "noEmitOnError": false,
+        "outFile": "gen/main.js",
+        "target": "es5",
+        "sourceMap": false,
+        "outDir": "./gen/",
+        "declaration": false,
+        "removeComments": true
+    },
+    "compileOnSave": true,
+    "files": [
+        "src/liblol-ts/Lol.ts",
+        "src/mygame/Config.ts"
+    ]
+}
