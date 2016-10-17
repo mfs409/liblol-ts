@@ -23,22 +23,13 @@ class GameConfig extends LOL.Config {
         this.gameTitle = "My Lol Game";
         this.enableChooser = true;
 
-        // The code for building the playable levels
-        // this.levelBuilder = 
-        // this.splashBuilder =
-        // this.chooserBuilder =
-        // this.helpBuilder =
-        // this.storeBuilder =
-
         // The images used by this game
         this.imgNames = [
             "assets/audio_off.png",
             "assets/audio_on.png",
             "assets/back.png",
             "assets/backarrow.png",
-            "assets/ball.png",
             "assets/blueball.png",
-            "assets/box.jpg",
             "assets/chooser.png",
             "assets/colorstar1.png",
             "assets/colorstar2.png",
@@ -98,5 +89,18 @@ class GameConfig extends LOL.Config {
             "assets/winsound.ogg",
             "assets/woowoowoo.ogg",
         ];
+
+        // The code for building the playable levels
+        // this.levelBuilder = 
+        this.splashBuilder = new Splash();
+        // this.chooserBuilder =
+        // this.helpBuilder =
+        // this.storeBuilder =
     }
 }
+
+// This line of code is really important.  It instructs the liblol-ts framework
+// to actually start running, using the configuration that we provided above
+document.addEventListener("DOMContentLoaded", function () {
+    new LOL.Lol(new GameConfig());
+});
