@@ -14,6 +14,6 @@ module LOL {
          * @param which The screen to display. Your code should use an /if/ statement
          *              to decide what screen to display based on the value of /which/
          */
-        display(which: number);
+        display(which: number, game: Lol);
     }
 }
