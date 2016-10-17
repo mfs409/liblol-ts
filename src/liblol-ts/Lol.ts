@@ -1,3 +1,16 @@
+// TODO: conversion of this file is not yet complete
+
+///<reference path="../../typings/Pixi.d.ts" />
+///<reference path="../../typings/PhysicsType2d.v0_9.d.ts" />
+
+// Keep typescript happy:
+interface Window {
+    webkitRequestAnimationFrame: number;
+    mozRequestAnimationFrame: any;
+    oRequestAnimationFrame: any;
+    msRequestAnimationFrame: any;
+};
+
 module LOL {
 
     /**
@@ -124,30 +137,145 @@ module LOL {
          */
         public abstract configure();
     }
+
+    /**
+     * Modes of the game: we can be showing the main splash screen, the help
+     * screens, the level chooser, the store, or a playable level
+     */
+    enum MODES {
+        SPLASH = 0,
+        HELP,
+        CHOOSER,
+        STORE,
+        PLAY
+    }
+
+    /**
+     * A Lol object is the outermost container for all of the functionality of
+     * the game.  Its main role is to run a state machine, so we know which 
+     * ScreenManager is active, and what state it is in.  Splash screens, 
+     * Choosers, Help, and playable Levels each implement Screen, so that they 
+     * can do the real work.
+     */
+    export class Lol {
+        /**
+         * The current mode of the program (from among the above choices)
+         */
+        private mode: number = 0;
+
+        /**
+         * The mode state is used to represent the current level within a mode
+         * (i.e., 3rd help screen, or 5th page of the store). Tracking state
+         * separately for each mode makes going between a level and the chooser much
+         * easier.
+         */
+        private modeStates: number[] = [0, 0, 0, 0, 0];
+
+        /**
+         * The current level being shown
+         * 
+         * TODO: this is public for now, but we should not keep it so
+         */
+        public activeLevel: Level = null;
+
+        /**
+         * All configuration information for this game
+         */
+        private config: Config = null;
+
+        /**
+         * The renderer, who is responsible for drawing everything on the screen.
+         */
+        private renderer: PIXI.WebGLRenderer | PIXI.CanvasRenderer = null;
+
+        /**
+         * Use this to load the splash screen
+         */
+        public doSplash(): void {
+            // when we move to splash, all other screens get reset
+            for (let i = 0; i < 5; ++i) {
+                this.modeStates[i] = 1;
+            }
+            // update the state machine, show the screen
+            this.mode = MODES.SPLASH;
+            // TODO: we probably need to shut down the previous level first...
+            this.config.splashBuilder.display(1, this);
+        }
+
+        /**
+         * Initialize and launch the game.  This code should be called by the
+         * programmer, and it will initiate the sequence of loading assets and
+         * then running the code to display the splash screen.
+         * 
+         * @param cfg: A Config object, for describing how to build the game
+         */
+        constructor(cfg: Config) {
+            // Step 1: Normalize for differences in browsers.  In particular, 
+            // make sure we have a requestAnimationFrame() function on the window  
+            if (!window.requestAnimationFrame) {
+                window.requestAnimationFrame =
+                    window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame ||
+                    window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+                    function (callback) {
+                        window.setTimeout(callback, 1000 / 60);
+                    };
+            }
+
+            // Update the game configuration
+            cfg.configure();
+            this.config = cfg;
+
+            // Set up the level object, for managing whatever Level is active
+            this.activeLevel = new Level();
+
+            // Put a renderer into the HTML
+            // TODO: We should force the renderer size based on cfg, and we 
+            // should have a parameter for the name of the DOM element into 
+            // which we should put the renderer
+            this.renderer = PIXI.autoDetectRenderer(cfg.width, cfg.height);
+            document.body.appendChild(this.renderer.view);
+
+            // Step 3: load assets... this will trigger the next step once assets are loaded
+            let that = this;
+            PIXI.loader.add(this.config.imgNames).load(function () { that.onLoadAssets(); });
+
+            // TODO: we didn't do anything about audio yet...
+        }
+
+        /**
+         * After the assets are loaded, we can go ahead and start building a 
+         * level
+         */
+        private onLoadAssets() {
+            // When the assets get loaded, we should start showing the splash
+            // screen
+            this.doSplash();
+
+            // TODO: depending on how we ultimately decide to do the rendering,
+            // we might need to kick off rendering here
+            this.render();
+
+            // TODO: depending on how we ultimately decide to implement an 
+            // input controller, we might need to kick off input handling here
+        }
+
+        /**
+         * Handle input and timers, and then render the next screen of the game
+         */
+        private render() {
+            // schedule next render (that is, schedule next call to this 
+            // function)
+            let that = this;
+            requestAnimationFrame(function () { that.render(); });
+
+            // Prepare the world for rendering
+            this.activeLevel.render(this.renderer);
+        }
+    }
 }
 
-
-// /**
-//  * A Lol object is the outermost container for all of the functionality of the
-//  * game. It implements ApplicationListener (through Game), which provides hooks
-//  * for GDX to render the game, stop it, resume it, etc.
-//  *
-//  * Lol is not responsible for doing anything significant. It keeps track of
-//  * which screen is currently in use, and forwards (through Game) to that screen.
-//  * Splash screens, Choosers, Help, and playable Levels each implement Screen, so
-//  * that they can do the real work.
-//  */
 // public abstract class Lol extends Game {
 
-//     /**
-//      * Modes of the game: we can be showing the main splash screen, the help
-//      * screens, the level chooser, the store, or a playable level
-//      */
-//     static final int SPLASH = 0;
-//     static final int HELP = 1;
-//     static final int CHOOSER = 2;
-//     static final int STORE = 3;
-//     static final int PLAY = 4;
 //     /**
 //      * A reference to the game object... Since the interfaces are mostly static,
 //      * we need an instance of a Lol object that the static methods can call.
@@ -157,27 +285,12 @@ module LOL {
 //      * Store string/integer pairs that get reset whenever we restart the program
 //      */
 //     final TreeMap<String, Integer> mSessionFacts = new TreeMap<>();
-//     /**
-//      * The current level being shown
-//      */
-//     public Level mCurrentLevel;
 
 //     /**
 //      * A per-game string, to use for storing information on an Android device
 //      */
 //     protected String mStorageKey;
 
-//     /**
-//      * The current mode of the program (from among the above choices)
-//      */
-//     int mMode;
-//     /**
-//      * The mode state is used to represent the current level within a mode
-//      * (i.e., 3rd help screen, or 5th page of the store). Tracking state
-//      * separately for each mode makes going between a level and the chooser much
-//      * easier.
-//      */
-//     int mModeStates[] = new int[5];
 //     /**
 //      * This variable lets us track whether the user pressed 'back' on an
 //      * android, or 'escape' on the desktop. We are using polling, so we swallow
@@ -206,17 +319,6 @@ module LOL {
 //         configure();
 //     }
 
-//     /**
-//      * Use this to load the splash screen
-//      */
-//     public static void doSplash() {
-//         // reset state of all screens
-//         for (int i = 0; i < 5; ++i)
-//             sGame.mModeStates[i] = 1;
-//         sGame.mMode = SPLASH;
-//         sGame.mSplash.display(0);
-//         sGame.setScreen(sGame.mCurrentLevel);
-//     }
 
 //     /**
 //      * Use this to load the level-chooser screen. Note that when the chooser is
