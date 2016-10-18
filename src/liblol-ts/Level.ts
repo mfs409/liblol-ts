@@ -23,13 +23,13 @@ module LOL {
         /**
          * Any visual entity that we wish to draw on the heads-up display
          */
-        private hudSprites: PIXI.Container = null;
+        public hudSprites: Renderable[] = null;
 
         /**
-         * Any visual entity that exists in the physics world.  We have five
-         * 'z' planes for these entities, {-2, -1, -, 1, 2}
+         * Any visual entity that exists in the physics world, even if it 
+         * doesn't have physics attached to it.
          */
-        private worldSprites: PIXI.Container[] = null;
+        public worldSprites: Renderable[] = null;
 
         /**
          * The physics world in which all actors exits
@@ -49,8 +49,135 @@ module LOL {
          * @param renderer: The PIXI renderer to use for rendering
          */
         public render(renderer: PIXI.WebGLRenderer | PIXI.CanvasRenderer) {
-            console.log("rendering...");
+            //         // in debug mode, any click will report the coordinates of the click...
+            //         // this is very useful when trying to adjust screen coordinates
+            //         if (Lol.sGame.mShowDebugBoxes) {
+            //             if (Gdx.input.justTouched()) {
+            //                 mHudCam.unproject(mTouchVec.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+            //                 Util.message("Screen Coordinates", mTouchVec.x + ", " + mTouchVec.y);
+            //                 mGameCam.unproject(mTouchVec.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+            //                 Util.message("World Coordinates", mTouchVec.x + ", " + mTouchVec.y);
+
+            //             }
+            //         }
+
+            //         // Make sure the music is playing... Note that we start music before the
+            //         // PreScene shows
+            //         playMusic();
+
+            //         // Handle pauses due to pre, pause, or post scenes...
+            //         //
+            //         // Note that these handle their own screen touches...
+            //         //
+            //         // Note that win and lose scenes should come first.
+            //         if (mWinScene != null && mWinScene.render(mSpriteBatch))
+            //             return;
+            //         if (mLoseScene != null && mLoseScene.render(mSpriteBatch))
+            //             return;
+            //         if (mPreScene != null && mPreScene.render(mSpriteBatch))
+            //             return;
+            //         if (mPauseScene != null && mPauseScene.render(mSpriteBatch))
+            //             return;
+
+            //         // handle accelerometer stuff... note that accelerometer is effectively
+            //         // disabled during a popup... we could change that by moving this to the
+            //         // top, but that's probably not going to produce logical behavior
+            //         Lol.sGame.mCurrentLevel.mTilt.handleTilt();
+
+            //         // Advance the physics world by 1/45 of a second.
+            //         //
+            //         // NB: in Box2d, This is the recommended rate for phones, though it
+            //         // seems like we should be using /delta/ instead of 1/45f
+            //         mWorld.step(1 / 45f, 8, 3);
+
+            //         // now handle any events that occurred on account of the world movement
+            //         // or screen touches
+            //         for (LolAction pe : mOneTimeEvents)
+            //             pe.go();
+            //         mOneTimeEvents.clear();
+
+            //         // handle repeat events
+            //         for (LolAction pe : mRepeatEvents)
+            //             pe.go();
+
+            //         // check for end of game
+            //         if (mEndGameEvent != null)
+            //             mEndGameEvent.go();
+
+            //         // The world is now static for this time step... we can display it!
+
+            //         // clear the screen
+            //         Gdx.gl.glClearColor(mBackground.mColor.r, mBackground.mColor.g, mBackground.mColor.b, 1);
+            //         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+            //         // prepare the main camera... we do it here, so that the parallax code
+            //         // knows where to draw...
+            //         adjustCamera();
+            //         mGameCam.update();
+
+            //         // draw parallax backgrounds
+            //         mBackground.renderLayers(mSpriteBatch, delta);
+
+            // Render the actors in order from z=-2 through z=2
+            let layers: PIXI.Container[] = [null, null, null, null, null];
+            for (let i = 0; i < 5; ++i) {
+                layers[i] = new PIXI.Container();
+            }
+            for (let i = 0; i < this.worldSprites.length; ++i) {
+                let a = this.worldSprites[i];
+                if (a.image !== null) {
+                    layers[a.zIndex + 2].addChild(a.image);
+                }
+            }
+            // TODO: this isn't the best way to manage clearBeforeRender...
+            renderer.clearBeforeRender = true;
+            renderer.backgroundColor = 0xFFFFFF;
+            renderer.render(layers[0]);
+            renderer.clearBeforeRender = false;
+            for (let i = 1; i < 5; ++i) {
+                renderer.render(layers[i]);
+            }
+
+            //         mSpriteBatch.setProjectionMatrix(mGameCam.combined);
+            //         mSpriteBatch.begin();
+            //         for (ArrayList<Renderable> a : mRenderables)
+            //             for (Renderable r : a)
+            //                 r.render(mSpriteBatch, delta);
+            //         mSpriteBatch.end();
+
+            //         // draw parallax foregrounds
+            //         mForeground.renderLayers(mSpriteBatch, delta);
+
+
+            //         // DEBUG: draw outlines of physics actors
+            //         if (Lol.sGame.mShowDebugBoxes)
+            //             mDebugRender.render(mWorld, mGameCam.combined);
+
+            //         // draw Controls
+            //         mHudCam.update();
+            //         mSpriteBatch.setProjectionMatrix(mHudCam.combined);
+            //         mSpriteBatch.begin();
+            //         for (Control c : mControls)
+            //             if (c.mIsActive)
+            //                 c.render(mSpriteBatch);
+            //         for (Display d : mDisplays)
+            //             d.render(mSpriteBatch);
+            //         mSpriteBatch.end();
+
+            //         // DEBUG: render Controls' outlines
+            //         if (Lol.sGame.mShowDebugBoxes) {
+            //             mShapeRender.setProjectionMatrix(mHudCam.combined);
+            //             mShapeRender.begin(ShapeType.Line);
+            //             mShapeRender.setColor(Color.RED);
+            //             for (Control pe : mControls)
+            //                 if (pe.mRange != null)
+            //                     mShapeRender.rect(pe.mRange.x, pe.mRange.y, pe.mRange.width, pe.mRange.height);
+            //             mShapeRender.end();
+            //         }
+            //     }
         }
+
+
 
         /**
          * Initialize physics for the current level
@@ -60,16 +187,6 @@ module LOL {
          */
         public initPhysics(gravityX: number, gravityY: number) {
             this.world = new PhysicsType2d.Dynamics.World(new PhysicsType2d.Vector2(gravityX, gravityY));
-        }
-
-        /**
-         * Internal constructor to create a level.
-         * 
-         * WARNING: This is an internal constructor.  Programmers should never create a
-         * Level directly.
-         */
-        constructor() {
-            this.worldSprites = [null, null, null, null, null];
         }
 
         /**
@@ -85,10 +202,8 @@ module LOL {
             this.worldBoundaries.y = height;
 
             // reset all variables
-            for (let i = 0; i < 5; ++i) {
-                this.worldSprites[i] = new PIXI.Container();
-            }
-            this.hudSprites = new PIXI.Container();
+            this.worldSprites = [];
+            this.hudSprites = [];
 
             // TODO
             // // When debug mode is on, print the frames per second. This is icky, but
@@ -587,122 +702,6 @@ module LOL {
         //         for (GestureAction ga : mGestureResponders) {
         //             ga.onPanStop(mTouchVec);
         //             ga.onUp(mTouchVec);
-        //         }
-        //     }
-
-        //     /**
-        //      * This code is called every 1/45th of a second to update the game state and
-        //      * re-draw the screen
-        //      *
-        //      * @param delta The time since the last render
-        //      */
-        //     @Override
-        //     public void render(float delta) {
-        //         // in debug mode, any click will report the coordinates of the click...
-        //         // this is very useful when trying to adjust screen coordinates
-        //         if (Lol.sGame.mShowDebugBoxes) {
-        //             if (Gdx.input.justTouched()) {
-        //                 mHudCam.unproject(mTouchVec.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-        //                 Util.message("Screen Coordinates", mTouchVec.x + ", " + mTouchVec.y);
-        //                 mGameCam.unproject(mTouchVec.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-        //                 Util.message("World Coordinates", mTouchVec.x + ", " + mTouchVec.y);
-
-        //             }
-        //         }
-
-        //         // Make sure the music is playing... Note that we start music before the
-        //         // PreScene shows
-        //         playMusic();
-
-        //         // Handle pauses due to pre, pause, or post scenes...
-        //         //
-        //         // Note that these handle their own screen touches...
-        //         //
-        //         // Note that win and lose scenes should come first.
-        //         if (mWinScene != null && mWinScene.render(mSpriteBatch))
-        //             return;
-        //         if (mLoseScene != null && mLoseScene.render(mSpriteBatch))
-        //             return;
-        //         if (mPreScene != null && mPreScene.render(mSpriteBatch))
-        //             return;
-        //         if (mPauseScene != null && mPauseScene.render(mSpriteBatch))
-        //             return;
-
-        //         // handle accelerometer stuff... note that accelerometer is effectively
-        //         // disabled during a popup... we could change that by moving this to the
-        //         // top, but that's probably not going to produce logical behavior
-        //         Lol.sGame.mCurrentLevel.mTilt.handleTilt();
-
-        //         // Advance the physics world by 1/45 of a second.
-        //         //
-        //         // NB: in Box2d, This is the recommended rate for phones, though it
-        //         // seems like we should be using /delta/ instead of 1/45f
-        //         mWorld.step(1 / 45f, 8, 3);
-
-        //         // now handle any events that occurred on account of the world movement
-        //         // or screen touches
-        //         for (LolAction pe : mOneTimeEvents)
-        //             pe.go();
-        //         mOneTimeEvents.clear();
-
-        //         // handle repeat events
-        //         for (LolAction pe : mRepeatEvents)
-        //             pe.go();
-
-        //         // check for end of game
-        //         if (mEndGameEvent != null)
-        //             mEndGameEvent.go();
-
-        //         // The world is now static for this time step... we can display it!
-
-        //         // clear the screen
-        //         Gdx.gl.glClearColor(mBackground.mColor.r, mBackground.mColor.g, mBackground.mColor.b, 1);
-        //         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        //         // prepare the main camera... we do it here, so that the parallax code
-        //         // knows where to draw...
-        //         adjustCamera();
-        //         mGameCam.update();
-
-        //         // draw parallax backgrounds
-        //         mBackground.renderLayers(mSpriteBatch, delta);
-
-        //         // Render the actors in order from z=-2 through z=2
-        //         mSpriteBatch.setProjectionMatrix(mGameCam.combined);
-        //         mSpriteBatch.begin();
-        //         for (ArrayList<Renderable> a : mRenderables)
-        //             for (Renderable r : a)
-        //                 r.render(mSpriteBatch, delta);
-        //         mSpriteBatch.end();
-
-        //         // draw parallax foregrounds
-        //         mForeground.renderLayers(mSpriteBatch, delta);
-
-
-        //         // DEBUG: draw outlines of physics actors
-        //         if (Lol.sGame.mShowDebugBoxes)
-        //             mDebugRender.render(mWorld, mGameCam.combined);
-
-        //         // draw Controls
-        //         mHudCam.update();
-        //         mSpriteBatch.setProjectionMatrix(mHudCam.combined);
-        //         mSpriteBatch.begin();
-        //         for (Control c : mControls)
-        //             if (c.mIsActive)
-        //                 c.render(mSpriteBatch);
-        //         for (Display d : mDisplays)
-        //             d.render(mSpriteBatch);
-        //         mSpriteBatch.end();
-
-        //         // DEBUG: render Controls' outlines
-        //         if (Lol.sGame.mShowDebugBoxes) {
-        //             mShapeRender.setProjectionMatrix(mHudCam.combined);
-        //             mShapeRender.begin(ShapeType.Line);
-        //             mShapeRender.setColor(Color.RED);
-        //             for (Control pe : mControls)
-        //                 if (pe.mRange != null)
-        //                     mShapeRender.rect(pe.mRange.x, pe.mRange.y, pe.mRange.width, pe.mRange.height);
-        //             mShapeRender.end();
         //         }
         //     }
 

@@ -19,7 +19,7 @@ class Splash implements LOL.ScreenManager {
 
         // draw the background. Note that "Play", "Help", and "Quit" are part of
         // this background image.
-        Util.drawPicture(0, 0, 48, 32, "splash.png", 0);
+        LOL.Util.drawPicture(0, 0, 48, 32, "assets/splash.png", 0, game);
 
         //         // start the music
         //         Level.setMusic("tune.ogg");

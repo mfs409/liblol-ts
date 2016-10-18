@@ -5,38 +5,26 @@ module LOL {
      * The Util class stores a few helper functions that we use inside of LOL, and a
      * few simple wrappers that we give to the game developer
      */
-    class Util {
+    export class Util {
         //     /**
         //      * A random number generator... We provide this so that new game developers
         //      * don't create lots of Random()s throughout their code
         //      */
         //     private static Random sGenerator = new Random();
 
-        //     /**
-        //      * Create a Renderable that consists of an image
-        //      *
-        //      * @param x       The X coordinate of the bottom left corner, in pixels
-        //      * @param y       The Y coordinate of the bottom left corner, in pixels
-        //      * @param width   The image width, in pixels
-        //      * @param height  The image height, in pixels
-        //      * @param imgName The file name for the image, or ""
-        //      * @return A Renderable of the image
-        //      */
-        //     public static Renderable makePicture(final float x, final float y, final float width, final float height,
-        //                                          String imgName) {
-        //         // set up the image to display
-        //         //
-        //         // NB: this will fail gracefully (no crash) for invalid file names
-        //         TextureRegion[] trs = Media.getImage(imgName);
-        //         final TextureRegion tr = (trs != null) ? trs[0] : null;
-        //         return new Renderable() {
-        //             @Override
-        //             public void render(SpriteBatch sb, float elapsed) {
-        //                 if (tr != null)
-        //                     sb.draw(tr, x, y, 0, 0, width, height, 1, 1, 0);
-        //             }
-        //         };
-        //     }
+        /**
+         * Instead of using Gdx.app.log directly, and potentially writing a lot of
+         * debug info in a production setting, we use this to only dump to the log
+         * when debug mode is on
+         *
+         * @param tag  The message tag
+         * @param text The message text
+         */
+        public static message(tag: string, text: string, game: Lol) {
+            if (game.config.showDebugBoxes) {
+                console.log(tag + " : " + text);
+            }
+        }
 
         //     /**
         //      * Create a Renderable that consists of some text to draw
@@ -89,18 +77,6 @@ module LOL {
         //         };
         //     }
 
-        //     /**
-        //      * Instead of using Gdx.app.log directly, and potentially writing a lot of
-        //      * debug info in a production setting, we use this to only dump to the log
-        //      * when debug mode is on
-        //      *
-        //      * @param tag  The message tag
-        //      * @param text The message text
-        //      */
-        //     static void message(String tag, String text) {
-        //         if (Lol.sGame.mShowDebugBoxes)
-        //             Gdx.app.log(tag, text);
-        //     }
 
         //     /*
         //      * PUBLIC INTERFACE
@@ -144,24 +120,26 @@ module LOL {
         //         right.setPhysics(density, elasticity, friction);
         //     }
 
-        //     /**
-        //      * Draw a picture on the current level
-        //      *
-        //      * Note: the order in which this is called relative to other actors will
-        //      * determine whether they go under or over this picture.
-        //      *
-        //      * @param x       X coordinate of bottom left corner
-        //      * @param y       Y coordinate of bottom left corner
-        //      * @param width   Width of the picture
-        //      * @param height  Height of this picture
-        //      * @param imgName Name of the picture to display
-        //      * @param zIndex  The z index of the image. There are 5 planes: -2, -2, 0, 1,
-        //      *                and 2. By default, everything goes to plane 0
-        //      */
-        //     public static void drawPicture(final float x, final float y, final float width, final float height,
-        //                                    final String imgName, int zIndex) {
-        //         Lol.sGame.mCurrentLevel.addActor(Util.makePicture(x, y, width, height, imgName), zIndex);
-        //     }
+        /**
+         * Draw a picture on the current level
+         *
+         * Note: the order in which this is called relative to other actors will
+         * determine whether they go under or over this picture.
+         *
+         * @param x:       X coordinate of bottom left corner in meters
+         * @param y:       Y coordinate of bottom left corner in meters
+         * @param width:   Width of the picture in meters
+         * @param height:  Height of this picture in meters
+         * @param imgName: Name of the picture to display
+         * @param zIndex:  The z index of the image. There are 5 planes: -2, -2, 0, 1,
+         *                 and 2. By default, everything goes to plane 0
+         */
+        public static drawPicture(x: number, y: number, width: number, height: number, imgName: string, zIndex: number, game: Lol): Renderable {
+            let pic = new Renderable(x, y, width, height, imgName, game);
+            pic.zIndex = zIndex;
+            game.activeLevel.worldSprites.push(pic);
+            return pic;
+        }
 
         //     /**
         //      * Draw some text on the current level
