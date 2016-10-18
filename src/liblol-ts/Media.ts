@@ -1,70 +1,11 @@
 // TODO: conversion of this file is not yet complete
 
 // /**
-//  * This is free and unencumbered software released into the public domain.
-//  *
-//  * Anyone is free to copy, modify, publish, use, compile, sell, or
-//  * distribute this software, either in source code form or as a compiled
-//  * binary, for any purpose, commercial or non-commercial, and by any
-//  * means.
-//  *
-//  * In jurisdictions that recognize copyright laws, the author or authors
-//  * of this software dedicate any and all copyright interest in the
-//  * software to the public domain. We make this dedication for the benefit
-//  * of the public at large and to the detriment of our heirs and
-//  * successors. We intend this dedication to be an overt act of
-//  * relinquishment in perpetuity of all present and future rights to this
-//  * software under copyright law.
-//  *
-//  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-//  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-//  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-//  * IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
-//  * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-//  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-//  * OTHER DEALINGS IN THE SOFTWARE.
-//  *
-//  * For more information, please refer to <http://unlicense.org>
-//  */
-
-// package edu.lehigh.cse.lol;
-
-// import com.badlogic.gdx.Gdx;
-// import com.badlogic.gdx.audio.Music;
-// import com.badlogic.gdx.audio.Sound;
-// import com.badlogic.gdx.graphics.Texture;
-// import com.badlogic.gdx.graphics.g2d.BitmapFont;
-// import com.badlogic.gdx.graphics.g2d.TextureRegion;
-// import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-// import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
-
-// import java.util.TreeMap;
-
-// /**
 //  * The MediaFactory provides a mechanism for registering all of our images,
 //  * sounds, and fonts Strictly speaking, we can re-create fonts on the fly
 //  * whenever we need to. Caching them here is an optimization.
 //  */
 // public class Media {
-//     /**
-//      * Store the fonts used by this game
-//      */
-//     private final TreeMap<String, BitmapFont> mFonts = new TreeMap<>();
-
-//     /**
-//      * Store the sounds used by this game
-//      */
-//     private final TreeMap<String, Sound> mSounds = new TreeMap<>();
-
-//     /**
-//      * Store the music used by this game
-//      */
-//     private final TreeMap<String, Music> mTunes = new TreeMap<>();
-
-//     /**
-//      * Store the images used by this game
-//      */
-//     private final TreeMap<String, TextureRegion[]> mImages = new TreeMap<>();
 
 //     /**
 //      * When a game is disposed of, the images are managed by libGDX. Fonts are
