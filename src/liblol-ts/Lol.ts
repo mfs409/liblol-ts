@@ -181,7 +181,7 @@ module LOL {
         /**
          * All configuration information for this game
          */
-        private config: Config = null;
+        public config: Config = null;
 
         /**
          * The renderer, who is responsible for drawing everything on the screen.
@@ -229,10 +229,13 @@ module LOL {
             this.activeLevel = new Level();
 
             // Put a renderer into the HTML
-            // TODO: We should force the renderer size based on cfg, and we 
-            // should have a parameter for the name of the DOM element into 
-            // which we should put the renderer
+            // TODO: we should have a parameter for the name of the DOM element
+            // into which we should put the renderer
             this.renderer = PIXI.autoDetectRenderer(cfg.width, cfg.height);
+            // TODO: when we put this onto a phone, where we expect a reasonable
+            // guaranteed screen ratio, we probably want to add these two lines:
+            // this.renderer.view.style.width = window.innerWidth + "px";
+            // this.renderer.view.style.height = window.innerHeight + "px";
             document.body.appendChild(this.renderer.view);
 
             // Step 3: load assets... this will trigger the next step once assets are loaded
