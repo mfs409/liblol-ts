@@ -42,6 +42,16 @@ module LOL {
         private worldBoundaries: PhysicsType2d.Vector2 = new PhysicsType2d.Vector2(0, 0);
 
         /**
+         * The music, if any
+         */
+        private music: Howl = null;
+
+        /**
+         * Whether the music is playing or not
+         */
+        private musicPlaying: boolean = false;
+
+        /**
          * Each time the game wants to render the current screen, it needs to
          * request that the level advance the world and update all actors
          * coordinates
@@ -61,9 +71,9 @@ module LOL {
             //             }
             //         }
 
-            //         // Make sure the music is playing... Note that we start music before the
-            //         // PreScene shows
-            //         playMusic();
+            // Make sure the music is playing... Note that we start music before the
+            // PreScene shows
+            this.playMusic();
 
             //         // Handle pauses due to pre, pause, or post scenes...
             //         //
@@ -365,14 +375,6 @@ module LOL {
         //      */
         //     LolCallback mLoseCallback;
         //     /**
-        //      * The music, if any
-        //      */
-        //     private Music mMusic;
-        //     /**
-        //      * Whether the music is playing or not
-        //      */
-        //     private boolean mMusicPlaying;
-        //     /**
         //      * This callback is used to get a touched actor from the physics world
         //      */
         //     private QueryCallback mTouchCallback;
@@ -462,14 +464,14 @@ module LOL {
         //         Lol.sGame.mCurrentLevel.mChaseActor = actor;
         //     }
 
-        //     /**
-        //      * Set the background music for this level
-        //      *
-        //      * @param musicName Name of the Music file to play
-        //      */
-        //     public static void setMusic(String musicName) {
-        //         Lol.sGame.mCurrentLevel.mMusic = Media.getMusic(musicName);
-        //     }
+        /**
+         * Set the background music for this level
+         *
+         * @param musicName Name of the Music file to play
+         */
+        public setMusic(musicName: string, game: Lol) {
+            this.music = new Howl({ src: [game.config.assetFolder + musicName], loop: true });
+        }
 
         //     /**
         //      * Specify that you want some code to run after a fixed amount of time
@@ -598,39 +600,36 @@ module LOL {
         //      * SCREEN (SCREENADAPTER) OVERRIDES
         //      */
 
-        //     /**
-        //      * If the level has music attached to it, this starts playing it
-        //      */
-        //     void playMusic() {
-        //         if (!mMusicPlaying && mMusic != null) {
-        //             mMusicPlaying = true;
-        //             mMusic.play();
-        //         }
-        //     }
 
-        //     /**
-        //      * If the level has music attached to it, this pauses it
-        //      */
-        //     void pauseMusic() {
-        //         if (mMusicPlaying) {
-        //             mMusicPlaying = false;
-        //             mMusic.pause();
-        //         }
-        //     }
+        /**
+         * If the level has music attached to it, this starts playing it
+         */
+        private playMusic() {
+            if (!this.musicPlaying && this.music != null) {
+                this.musicPlaying = true;
+                this.music.play();
+            }
+        }
 
-        //     /**
-        //      * If the level has music attached to it, this stops it
-        //      */
-        //     void stopMusic() {
-        //         if (mMusicPlaying) {
-        //             mMusicPlaying = false;
-        //             mMusic.stop();
-        //         }
-        //     }
+        /**
+         * If the level has music attached to it, this pauses it
+         */
+        private pauseMusic() {
+            if (this.musicPlaying) {
+                this.musicPlaying = false;
+                this.music.pause();
+            }
+        }
 
-        //     /*
-        //      * PUBLIC INTERFACE
-        //      */
+        /**
+         * If the level has music attached to it, this stops it
+         */
+        private stopMusic() {
+            if (this.musicPlaying) {
+                this.musicPlaying = false;
+                this.music.stop();
+            }
+        }
 
         //     /**
         //      * If the camera is supposed to follow an actor, this code will handle
@@ -705,21 +704,23 @@ module LOL {
         //         }
         //     }
 
-        //     /**
-        //      * Whenever we hide the level, be sure to turn off the music
-        //      */
-        //     @Override
-        //     public void hide() {
-        //         pauseMusic();
-        //     }
+        /**
+         * Whenever we hide the level, be sure to turn off the music
+         * 
+         * TODO: do we ever get this lifecycle event?
+         */
+        public hide() {
+            this.pauseMusic();
+        }
 
-        //     /**
-        //      * Whenever we dispose of the level, be sure to turn off the music
-        //      */
-        //     @Override
-        //     public void dispose() {
-        //         stopMusic();
-        //     }
+        /**
+         * Whenever we dispose of the level, be sure to turn off the music
+         * 
+         * TODO: do we ever get this lifecycle event?
+         */
+        public dispose() {
+            this.stopMusic();
+        }
 
         //     /**
         //      * To properly handle gestures, we need to provide the code to run on each

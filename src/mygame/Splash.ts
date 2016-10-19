@@ -18,14 +18,15 @@ class Splash implements LOL.ScreenManager {
         // set up a simple level. We could make interesting things happen, since
         // we've got a physics world, but we won't.
         game.activeLevel.initialize(48, 32);
-        game.activeLevel.setPhysics(0,0);
+        game.activeLevel.setPhysics(0, 0);
 
         // draw the background. Note that "Play", "Help", and "Quit" are part of
         // this background image.
         LOL.Util.drawPicture(0, 0, 48, 32, "splash.png", 0, game);
 
-        //         // start the music
-        //         Level.setMusic("tune.ogg");
+        // start the music
+        // TODO: this API needs some work...
+        game.activeLevel.setMusic("tune.ogg", game);
 
         //         // This is the Play button... it switches to the first screen of the
         //         // level chooser. You could jump straight to the first level by using

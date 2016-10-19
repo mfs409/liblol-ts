@@ -2,6 +2,7 @@
 
 ///<reference path="../../typings/Pixi.d.ts" />
 ///<reference path="../../typings/PhysicsType2d.v0_9.d.ts" />
+///<reference path="../../typings/howler.d.ts" />
 
 // Keep typescript happy:
 interface Window {
