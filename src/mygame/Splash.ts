@@ -10,6 +10,9 @@ class Splash implements LOL.ScreenManager {
     /**
      * There is usually only one splash screen. However, the ScreenManager
      * interface requires display() to take a parameter.  We ignore it.
+     * 
+     * @param which: the splash screen index.  Should always be 1.  ignore it
+     * @param game: the game into which we are creating this splash screen
      */
     public display(which: number, game: LOL.Lol) {
         // set up a simple level. We could make interesting things happen, since
@@ -19,7 +22,7 @@ class Splash implements LOL.ScreenManager {
 
         // draw the background. Note that "Play", "Help", and "Quit" are part of
         // this background image.
-        LOL.Util.drawPicture(0, 0, 48, 32, "assets/splash.png", 0, game);
+        LOL.Util.drawPicture(0, 0, 48, 32, "splash.png", 0, game);
 
         //         // start the music
         //         Level.setMusic("tune.ogg");

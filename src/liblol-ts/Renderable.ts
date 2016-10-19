@@ -69,7 +69,7 @@ module LOL {
             }
             // Create a sprite
             if (found) {
-                this.image = new PIXI.Sprite(PIXI.Texture.fromFrame(imgName));
+                this.image = new PIXI.Sprite(PIXI.Texture.fromFrame(game.config.assetFolder + imgName));
                 this.image.anchor.x = this.image.anchor.y = 0.5;
                 this.image.height = this.dimensions.y * game.config.PIXELS_PER_METER;
                 this.image.width = this.dimensions.x * game.config.PIXELS_PER_METER;

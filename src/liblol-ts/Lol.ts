@@ -133,6 +133,11 @@ module LOL {
         public storeBuilder: ScreenManager = null;
 
         /**
+         * The folder in which assets are stored
+         */
+        public assetFolder: string = "";
+
+        /**
          * The configure() function is called to set the game configuration
          */
         public abstract configure();
@@ -240,6 +245,7 @@ module LOL {
 
             // Step 3: load assets... this will trigger the next step once assets are loaded
             let that = this;
+            PIXI.loader.baseUrl = this.config.assetFolder;
             PIXI.loader.add(this.config.imgNames).load(function () { that.onLoadAssets(); });
 
             // TODO: we didn't do anything about audio yet...
