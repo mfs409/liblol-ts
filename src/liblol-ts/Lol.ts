@@ -319,18 +319,6 @@ module LOL {
 //      */
 
 //     /**
-//      * The constructor just creates a media object and calls configure, so that
-//      * all of our globals will be set. Doing it this early lets us access the
-//      * configuration from within the LWJGL (Desktop) main class. That, in turn,
-//      * lets us get the screen size correct (see the desktop project's Java
-//      * file).
-//      */
-//     public Lol() {
-//         configure();
-//     }
-
-
-//     /**
 //      * Use this to load the level-chooser screen. Note that when the chooser is
 //      * disabled, we jump straight to level 1.
 //      *

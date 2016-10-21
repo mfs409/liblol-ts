@@ -1,3 +1,7 @@
+// TODO: conversion of this file is not yet complete
+
+// TODO: see http://www.albertosarullo.com/demos/accelerometer/
+
 // /**
 //  * This is free and unencumbered software released into the public domain.
 //  *

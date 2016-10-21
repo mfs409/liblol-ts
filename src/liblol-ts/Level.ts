@@ -344,15 +344,6 @@ module LOL {
         //     Actor mChaseActor;
 
         //     /**
-        //      * The maximum x value of the camera
-        //      */
-        //     int mCamBoundX;
-
-        //     /**
-        //      * The maximum y value of the camera
-        //      */
-        //     int mCamBoundY;
-        //     /**
         //      * When there is a touch of an actor in the physics world, this is how we
         //      * find it
         //      */
