@@ -44,6 +44,7 @@ module LOL {
                 callback.onEvent();
                 return true;
             }
+            c.gestureAction = ga;
             game.activeLevel.mControls.push(c);
             game.activeLevel.mTapControls.push(c);
             return c;

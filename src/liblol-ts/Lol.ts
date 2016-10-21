@@ -179,6 +179,12 @@ module LOL {
         private modeStates: number[] = [0, 0, 0, 0, 0];
 
         /**
+         * inputManager is responsible for routing touch events into events that 
+         * get processed correctly by the game
+         */
+        private inputManager: InputManager = null;
+
+        /**
          * The current level being shown
          * 
          * TODO: this is public for now, but we should not keep it so
@@ -284,24 +290,8 @@ module LOL {
             document.body.appendChild(this.renderer.view);
 
             // Configure touch and gesture input for the renderer
-            let elt = this.renderer.view;
-            let hammertime: Hammer = new Hammer(elt);
-
-            hammertime.get("pan").set({ direction: Hammer.DIRECTION_ALL });
-            hammertime.get("swipe").set({ direction: Hammer.DIRECTION_ALL });
-            hammertime.get("pinch").set({ enable: true });
-            hammertime.get("rotate").set({ enable: true });
-
-            hammertime.on("pan", function (ev) { console.log("PAN"); });
-            hammertime.on("tap", function (ev) { console.log("TAP"); });
-            hammertime.on("press", function (ev) { console.log("PRESS"); });
-            hammertime.on("swipe", function (ev) { console.log("SWIPE"); });
-            hammertime.on("pinch", function (ev) { console.log("PINCH"); });
-            hammertime.on("rotate", function (ev) { console.log("ROTATE"); });
-
-            elt.addEventListener("touchstart", function (e) { console.log(e); e.preventDefault(); });
-            elt.addEventListener("touchend", function (e) { console.log(e); e.preventDefault(); });
-
+            this.inputManager = new InputManager();
+            this.inputManager.configure(this.renderer.view, this);
 
             // Step 3: load graphics assets... this will trigger the next step once assets are loaded
             let that = this;

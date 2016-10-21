@@ -25,6 +25,7 @@
         "src/liblol-ts/GestureAction.ts",
         "src/liblol-ts/Goodie.ts",
         "src/liblol-ts/Hero.ts",
+        "src/liblol-ts/InputManager.ts",
         "src/liblol-ts/Level.ts",
         "src/liblol-ts/Lol.ts",
         "src/liblol-ts/LolAction.ts",
