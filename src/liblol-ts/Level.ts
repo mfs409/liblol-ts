@@ -163,13 +163,23 @@ module LOL {
             //         if (Lol.sGame.mShowDebugBoxes)
             //             mDebugRender.render(mWorld, mGameCam.combined);
 
-            //         // draw Controls
+            // draw Controls
             //         mHudCam.update();
             //         mSpriteBatch.setProjectionMatrix(mHudCam.combined);
             //         mSpriteBatch.begin();
-            //         for (Control c : mControls)
-            //             if (c.mIsActive)
-            //                 c.render(mSpriteBatch);
+
+
+            let container: PIXI.Container = new PIXI.Container();
+            for (let i = 0; i < this.mControls.length; ++i) {
+                let c = this.mControls[i];
+                if (c.visible) {
+                    console.log("found visible control");
+                    container.addChild(c.image);
+                }
+            }
+            renderer.render(container);
+
+
             //         for (Display d : mDisplays)
             //             d.render(mSpriteBatch);
             //         mSpriteBatch.end();
@@ -292,18 +302,22 @@ module LOL {
         //      * The scene to show when the level is paused (if any)
         //      */
         //     PauseScene mPauseScene;
-        //     /**
-        //      * Input Controls
-        //      */
-        //     ArrayList<Control> mControls = new ArrayList<>();
+
+        /**
+         * Input Controls
+         */
+        public mControls: Control[] = [];
+
         //     /**
         //      * Output Displays
         //      */
         //     ArrayList<Display> mDisplays = new ArrayList<>();
-        //     /**
-        //      * Controls that have a tap event
-        //      */
-        //     ArrayList<Control> mTapControls = new ArrayList<>();
+
+        /**
+         * Controls that have a tap event
+         */
+        public mTapControls: Control[] = [];
+
         //     /**
         //      * Controls that have a pan event
         //      */
@@ -461,7 +475,7 @@ module LOL {
          * @param musicName Name of the Music file to play
          */
         public setMusic(musicName: string, game: Lol) {
-            this.music = new Howl({ src: [game.config.assetFolder + musicName], loop: true });
+            this.music = new Howl({ loop: true, src: [game.config.assetFolder + musicName] });
         }
 
         //     /**

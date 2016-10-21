@@ -3,6 +3,7 @@
 ///<reference path="../../typings/Pixi.d.ts" />
 ///<reference path="../../typings/PhysicsType2d.v0_9.d.ts" />
 ///<reference path="../../typings/howler.d.ts" />
+///<reference path="../../typings/hammer.d.ts" />
 
 // Keep typescript happy:
 interface Window {
@@ -282,12 +283,32 @@ module LOL {
             // this.renderer.view.style.height = window.innerHeight + "px";
             document.body.appendChild(this.renderer.view);
 
-            // Step 3: load assets... this will trigger the next step once assets are loaded
+            // Configure touch and gesture input for the renderer
+            let elt = this.renderer.view;
+            let hammertime: Hammer = new Hammer(elt);
+
+            hammertime.get("pan").set({ direction: Hammer.DIRECTION_ALL });
+            hammertime.get("swipe").set({ direction: Hammer.DIRECTION_ALL });
+            hammertime.get("pinch").set({ enable: true });
+            hammertime.get("rotate").set({ enable: true });
+
+            hammertime.on("pan", function (ev) { console.log("PAN"); });
+            hammertime.on("tap", function (ev) { console.log("TAP"); });
+            hammertime.on("press", function (ev) { console.log("PRESS"); });
+            hammertime.on("swipe", function (ev) { console.log("SWIPE"); });
+            hammertime.on("pinch", function (ev) { console.log("PINCH"); });
+            hammertime.on("rotate", function (ev) { console.log("ROTATE"); });
+
+            elt.addEventListener("touchstart", function (e) { console.log(e); e.preventDefault(); });
+            elt.addEventListener("touchend", function (e) { console.log(e); e.preventDefault(); });
+
+
+            // Step 3: load graphics assets... this will trigger the next step once assets are loaded
             let that = this;
             PIXI.loader.baseUrl = this.config.assetFolder;
             PIXI.loader.add(this.config.imgNames).load(function () { that.onLoadAssets(); });
 
-            // TODO: we didn't do anything about audio yet...
+            // TODO: is there a way to pre-load audio assets?
         }
 
         /**

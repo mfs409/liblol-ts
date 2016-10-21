@@ -28,16 +28,14 @@ class Splash implements LOL.ScreenManager {
         // TODO: this API needs some work...
         game.activeLevel.setMusic("tune.ogg", game);
 
-        //         // This is the Play button... it switches to the first screen of the
-        //         // level chooser. You could jump straight to the first level by using
-        //         // "doLevel(1)", but check the configuration in MyLolGame... there's a
-        //         // field you should change if you don't want the 'back' button to go
-        //         // from that level to the chooser.
-        //         Control.addCallbackControl(384, 182, 186, 104, "", new LolCallback() {
-        //             public void onEvent() {
-        //                 Lol.doChooser(1);
-        //             }
-        //         });
+        // This is the Play button... it switches to the first screen of the
+        // level chooser. You could jump straight to the first level by using
+        // "doLevel(1)", but check the configuration in MyLolGame... there's a
+        // field you should change if you don't want the 'back' button to go
+        // from that level to the chooser.
+        let cb = new LOL.LolCallback();
+        cb.onEvent = function () { game.doChooser(1); };
+        LOL.Control.addCallbackControl(384, 182, 186, 104, "red.png", cb, game);
 
         //         // This is the Help button... it switches to the first screen of the
         //         // help system
