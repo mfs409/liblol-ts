@@ -209,6 +209,44 @@ module LOL {
         }
 
         /**
+         * Use this to load the level-chooser screen. Note that when the chooser is
+         * disabled, we jump straight to level 1.
+         *
+         * @param whichChooser The chooser screen to create
+         */
+        public doChooser(whichChooser: number) {
+            // if chooser disabled, then we either called this from splash, or from
+            // a game level
+
+            // TODO: we probably need to shut down the previous level first...
+
+            if (!this.config.enableChooser) {
+                if (this.mode === MODES.PLAY) {
+                    this.doSplash();
+                } else {
+                    this.doLevel(this.modeStates[MODES.PLAY]);
+                }
+                return;
+            }
+            // the chooser is not disabled... save the choice of level, configure
+            // it, and show it.
+            this.mode = MODES.CHOOSER;
+            this.modeStates[MODES.CHOOSER] = whichChooser;
+            this.config.chooserBuilder.display(whichChooser, this);
+        }
+
+        /**
+         * Use this to load a playable level.
+         *
+         * @param which The index of the level to load
+         */
+        public doLevel(which: number) {
+            this.modeStates[MODES.PLAY] = which;
+            this.mode = MODES.PLAY;
+            this.config.levelBuilder.display(which, this);
+        }
+
+        /**
          * Initialize and launch the game.  This code should be called by the
          * programmer, and it will initiate the sequence of loading assets and
          * then running the code to display the splash screen.
@@ -313,47 +351,6 @@ module LOL {
 //      * Store all the images, sounds, and fonts for the game
 //      */
 //     Media mMedia;
-
-//     /*
-//      * INTERNAL METHODS
-//      */
-
-//     /**
-//      * Use this to load the level-chooser screen. Note that when the chooser is
-//      * disabled, we jump straight to level 1.
-//      *
-//      * @param whichChooser The chooser screen to create
-//      */
-//     public static void doChooser(int whichChooser) {
-//         // if chooser disabled, then we either called this from splash, or from
-//         // a game level
-//         if (!sGame.mEnableChooser) {
-//             if (sGame.mMode == PLAY) {
-//                 doSplash();
-//             } else {
-//                 doLevel(sGame.mModeStates[PLAY]);
-//             }
-//             return;
-//         }
-//         // the chooser is not disabled... save the choice of level, configure
-//         // it, and show it.
-//         sGame.mMode = CHOOSER;
-//         sGame.mModeStates[CHOOSER] = whichChooser;
-//         sGame.mChooser.display(whichChooser);
-//         sGame.setScreen(sGame.mCurrentLevel);
-//     }
-
-//     /**
-//      * Use this to load a playable level.
-//      *
-//      * @param which The index of the level to load
-//      */
-//     public static void doLevel(int which) {
-//         sGame.mModeStates[PLAY] = which;
-//         sGame.mMode = PLAY;
-//         sGame.mLevels.display(which);
-//         sGame.setScreen(sGame.mCurrentLevel);
-//     }
 
 //     /*
 //      * APPLICATIONLISTENER (GAME) OVERRIDES
