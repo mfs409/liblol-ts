@@ -270,11 +270,24 @@ module LOL {
         }
 
         /**
+         * Use this to load a screen of the store.
+         *
+         * @param which The index of the help level to load
+         */
+        public doStore(which: number) {
+            this.modeStates[MODES.STORE] = which;
+            this.mode = MODES.STORE;
+            // TODO: we probably need to shut down the previous level first...
+            this.config.storeBuilder.display(which, this);
+        }
+
+        /**
          * Use this to quit the game
          */
         public doQuit() {
             // TODO: we probably need to shut down the previous level first...
             window.alert("The quit button only works for the mobile app");
+            // TODO: need to put a cordova hook in here to actually close when we're mobile
             window.close();
         }
 
@@ -361,11 +374,6 @@ module LOL {
 // public abstract class Lol extends Game {
 
 //     /**
-//      * A reference to the game object... Since the interfaces are mostly static,
-//      * we need an instance of a Lol object that the static methods can call.
-//      */
-//     public static Lol sGame;
-//     /**
 //      * Store string/integer pairs that get reset whenever we restart the program
 //      */
 //     final TreeMap<String, Integer> mSessionFacts = new TreeMap<>();
@@ -393,17 +401,6 @@ module LOL {
 //      */
 
 
-//     /**
-//      * Use this to load a screen of the store.
-//      *
-//      * @param which The index of the help level to load
-//      */
-//     public static void doStore(int which) {
-//         sGame.mModeStates[STORE] = which;
-//         sGame.mMode = STORE;
-//         sGame.mStore.display(which);
-//         sGame.setScreen(sGame.mCurrentLevel);
-//     }
 
 //     /*
 //      * PUBLIC INTERFACE
@@ -447,6 +444,8 @@ module LOL {
 //      * permitted.
 //      *
 //      * @param millis The amount of time to vibrate
+//      *
+//      * TODO: see https://www.sitepoint.com/use-html5-vibration-api/
 //      */
 //     void vibrate(int millis) {
 //         if (mEnableVibration)
@@ -523,24 +522,6 @@ module LOL {
 //     }
 
 //     /**
-//      * This is an internal method for quitting a game. User code should never
-//      * call this.
-//      */
-//     @Override
-//     public void dispose() {
-//         super.dispose();
-
-//         // dispose of all fonts, textureregions, etc...
-//         //
-//         // It appears that GDX manages all textures for images and fonts, as
-//         // well as all sounds and music files. That
-//         // being the case, the only thing we need to be careful about is that we
-//         // get rid of any references to fonts that
-//         // might be hanging around
-//         Media.onDispose();
-//     }
-
-//     /**
 //      * This is an internal method for drawing game levels. User code should
 //      * never call this.
 //      */
@@ -552,13 +533,4 @@ module LOL {
 //         super.render();
 //     }
 
-//     /**
-//      * Register any sound or image files to be used by the game
-//      */
-//     abstract public void loadResources();
-
-//     /**
-//      * Set up all the global configuration options for the game
-//      */
-//     abstract public void configure();
 // }
