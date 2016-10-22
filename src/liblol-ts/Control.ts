@@ -20,10 +20,10 @@ module LOL {
          */
         public gestureAction: GestureAction = null;
 
-        //     /**
-        //      * For disabling a control and stopping its rendering
-        //      */
-        //     boolean mIsActive = true;
+        /**
+         * For disabling a control and stopping its rendering
+         */
+        public mIsActive: boolean = true;
 
         /**
          * Add a button to the heads-up display that runs custom code via an
@@ -65,7 +65,6 @@ module LOL {
             // Set up the renderable's dimensions, position, and image
             // TODO: we need a better way to convert/not convert pixels to meters and back
             super(x / game.config.PIXELS_PER_METER, y / game.config.PIXELS_PER_METER, width / game.config.PIXELS_PER_METER, height / game.config.PIXELS_PER_METER, imgName, game);
-
             this.isTouchable = true;
         }
 
@@ -1096,32 +1095,32 @@ module LOL {
         //             sb.draw(mImage, mRange.x, mRange.y, 0, 0, mRange.width, mRange.height, 1, 1, 0);
         //     }
 
-        //     /**
-        //      * Disable the control, so that it doesn't get displayed
-        //      */
-        //     public void setInactive() {
-        //         mIsActive = false;
-        //     }
+        /**
+         * Disable the control, so that touching it doesn't generate events
+         */
+        public setInactive() {
+            this.mIsActive = false;
+        }
 
-        //     /**
-        //      * Enable the control, so that it gets displayed again
-        //      */
-        //     public void setActive() {
-        //         mIsActive = true;
-        //     }
+        /**
+         * Enable the control, so that touching it generates events again
+         */
+        public setActive() {
+            this.mIsActive = true;
+        }
 
-        //     /**
-        //      * Disable touch for this control
-        //      */
-        //     public void disableTouch() {
-        //         mIsTouchable = false;
-        //     }
+        /**
+         * Disable touch for this control
+         */
+        public disableTouch() {
+            this.isTouchable = false;
+        }
 
-        //     /**
-        //      * Enable touch for this control
-        //      */
-        //     public void enableTouch() {
-        //         mIsTouchable = true;
-        //     }
+        /**
+         * Enable touch for this control
+         */
+        public enableTouch() {
+            this.isTouchable = true;
+        }
     }
 }

@@ -328,7 +328,7 @@ module LOL {
             requestAnimationFrame(function () { that.render(); });
 
             // Prepare the world for rendering
-            this.activeLevel.render(this.renderer);
+            this.activeLevel.render(this.renderer, this);
         }
     }
 }

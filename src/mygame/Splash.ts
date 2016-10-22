@@ -35,7 +35,7 @@ class Splash implements LOL.ScreenManager {
         // from that level to the chooser.
         let cb = new LOL.LolCallback();
         cb.onEvent = function () { game.doChooser(1); };
-        LOL.Control.addCallbackControl(384, 182, 186, 104, "red.png", cb, game);
+        LOL.Control.addCallbackControl(384, 352, 190, 115, "", cb, game);
 
         //         // This is the Help button... it switches to the first screen of the
         //         // help system

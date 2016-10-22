@@ -58,7 +58,7 @@ module LOL {
          * 
          * @param renderer: The PIXI renderer to use for rendering
          */
-        public render(renderer: PIXI.WebGLRenderer | PIXI.CanvasRenderer) {
+        public render(renderer: PIXI.WebGLRenderer | PIXI.CanvasRenderer, game: Lol) {
             //         // in debug mode, any click will report the coordinates of the click...
             //         // this is very useful when trying to adjust screen coordinates
             //         if (Lol.sGame.mShowDebugBoxes) {
@@ -173,7 +173,6 @@ module LOL {
             for (let i = 0; i < this.mControls.length; ++i) {
                 let c = this.mControls[i];
                 if (c.visible) {
-                    console.log("found visible control");
                     container.addChild(c.image);
                 }
             }
@@ -184,20 +183,20 @@ module LOL {
             //             d.render(mSpriteBatch);
             //         mSpriteBatch.end();
 
-            //         // DEBUG: render Controls' outlines
-            //         if (Lol.sGame.mShowDebugBoxes) {
-            //             mShapeRender.setProjectionMatrix(mHudCam.combined);
-            //             mShapeRender.begin(ShapeType.Line);
-            //             mShapeRender.setColor(Color.RED);
-            //             for (Control pe : mControls)
-            //                 if (pe.mRange != null)
-            //                     mShapeRender.rect(pe.mRange.x, pe.mRange.y, pe.mRange.width, pe.mRange.height);
-            //             mShapeRender.end();
-            //         }
-            //     }
+
+            // DEBUG: render Controls' outlines in red
+            if (game.config.showDebugBoxes) {
+                let g = new PIXI.Graphics();
+                g.lineStyle(1, 0xFF0000);
+                for (let i = 0; i < this.mControls.length; ++i) {
+                    // TODO: do we need a check of some sort
+                    let c = this.mControls[i];
+                    let r = game.config.PIXELS_PER_METER;
+                    g.drawRect(c.position.x * r, c.position.y * r, c.dimensions.x * r, c.dimensions.y * r);
+                }
+                renderer.render(g);
+            }
         }
-
-
 
         /**
          * Initialize physics for the current level

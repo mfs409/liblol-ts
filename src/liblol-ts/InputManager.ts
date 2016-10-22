@@ -16,15 +16,15 @@ module LOL {
             // set the listeners
             let that = this;
             hammertime.on("pan", function (ev) { console.log("PAN"); });
-            hammertime.on("tap", function (ev) { that.tap(ev); });
+            hammertime.on("tap", function (ev) { that.tap(ev, that.game); });
             hammertime.on("press", function (ev) { console.log("PRESS"); });
             hammertime.on("swipe", function (ev) { console.log("SWIPE"); });
             hammertime.on("pinch", function (ev) { console.log("PINCH"); });
             hammertime.on("rotate", function (ev) { console.log("ROTATE"); });
 
-            elt.addEventListener("touchstart", function (e) { console.log(e); e.preventDefault(); });
-            elt.addEventListener("touchend", function (e) { console.log(e); e.preventDefault(); });
-
+            elt.addEventListener("touchstart", function (e) { Util.message("Screen Coordinates", e.changedTouches[0].clientX + ", " + e.changedTouches[0].clientY, that.game); e.preventDefault(); });
+            elt.addEventListener("touchend", function (e) { console.log("screen release"); e.preventDefault(); });
+            elt.addEventListener("mousedown", function (e) { Util.message("Screen Coordinates", e.clientX + ", " + e.clientY, that.game); e.preventDefault(); });
         }
 
 
@@ -37,9 +37,7 @@ module LOL {
          * @param count  1 for single click, 2 for double-click
          * @param button The mouse button that was pressed
          */
-        public tap(e: any /*x: number, y: number, count: number, button: number*/) {
-            console.log("TAP");
-            console.log(e);
+        public tap(e: any, game: Lol /*x: number, y: number, count: number, button: number*/) {
             //             // if any pop-up scene is showing, forward the tap to the scene and
             //             // return true, so that the event doesn't get passed to the Scene
             //             if (mWinScene != null && mWinScene.mVisible) {
@@ -59,8 +57,11 @@ module LOL {
             // check if we tapped a control
             for (let i = 0; i < this.game.activeLevel.mTapControls.length; ++i) {
                 let c = this.game.activeLevel.mTapControls[i];
-                console.log(c);
-                if (c.isTouchable /* TODO: && c.mIsActive  && c.contains(ev)*/) {
+                // Translate the tap coordinates into world coordinates
+                // TODO: this needs work once the camera can move
+                let x = e.center.x / game.config.PIXELS_PER_METER;
+                let y = e.center.y / game.config.PIXELS_PER_METER;
+                if (c.isTouchable && c.mIsActive && c.contains(x, y)) {
                     c.gestureAction.onTap(e);
                     return;
                 }

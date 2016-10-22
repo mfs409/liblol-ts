@@ -46,6 +46,13 @@ module LOL {
         public image: PIXI.Sprite = null;
 
         /**
+         * Check if a point falls within this renderable.
+         */
+        public contains(x: number, y: number): boolean {
+            return x >= this.position.x && x <= this.position.x + this.dimensions.x && y >= this.position.y && y <= this.position.y + this.dimensions.y;
+        }
+
+        /**
          * Create a Renderable image, that can be displayed on the screen
          * 
          * @param x: the X coordinate of the top left corner, in meters
