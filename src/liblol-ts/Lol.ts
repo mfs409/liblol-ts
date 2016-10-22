@@ -229,8 +229,10 @@ module LOL {
 
             if (!this.config.enableChooser) {
                 if (this.mode === MODES.PLAY) {
+                    // TODO: we probably need to shut down the previous level first...
                     this.doSplash();
                 } else {
+                    // TODO: we probably need to shut down the previous level first...
                     this.doLevel(this.modeStates[MODES.PLAY]);
                 }
                 return;
@@ -239,6 +241,7 @@ module LOL {
             // it, and show it.
             this.mode = MODES.CHOOSER;
             this.modeStates[MODES.CHOOSER] = whichChooser;
+            // TODO: we probably need to shut down the previous level first...
             this.config.chooserBuilder.display(whichChooser, this);
         }
 
@@ -250,7 +253,29 @@ module LOL {
         public doLevel(which: number) {
             this.modeStates[MODES.PLAY] = which;
             this.mode = MODES.PLAY;
+            // TODO: we probably need to shut down the previous level first...
             this.config.levelBuilder.display(which, this);
+        }
+
+        /**
+         * Use this to load a help level.
+         *
+         * @param which The index of the help level to load
+         */
+        public doHelp(which: number) {
+            this.modeStates[MODES.HELP] = which;
+            this.mode = MODES.HELP;
+            // TODO: we probably need to shut down the previous level first...
+            this.config.helpBuilder.display(which, this);
+        }
+
+        /**
+         * Use this to quit the game
+         */
+        public doQuit() {
+            // TODO: we probably need to shut down the previous level first...
+            window.alert("The quit button only works for the mobile app");
+            window.close();
         }
 
         /**
@@ -367,17 +392,6 @@ module LOL {
 //      * APPLICATIONLISTENER (GAME) OVERRIDES
 //      */
 
-//     /**
-//      * Use this to load a help level.
-//      *
-//      * @param which The index of the help level to load
-//      */
-//     public static void doHelp(int which) {
-//         sGame.mModeStates[HELP] = which;
-//         sGame.mMode = HELP;
-//         sGame.mHelp.display(which);
-//         sGame.setScreen(sGame.mCurrentLevel);
-//     }
 
 //     /**
 //      * Use this to load a screen of the store.
@@ -389,14 +403,6 @@ module LOL {
 //         sGame.mMode = STORE;
 //         sGame.mStore.display(which);
 //         sGame.setScreen(sGame.mCurrentLevel);
-//     }
-
-//     /**
-//      * Use this to quit the game
-//      */
-//     public static void doQuit() {
-//         sGame.getScreen().dispose();
-//         Gdx.app.exit();
 //     }
 
 //     /*

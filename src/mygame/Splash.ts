@@ -33,24 +33,15 @@ class Splash implements LOL.ScreenManager {
         // "doLevel(1)", but check the configuration in MyLolGame... there's a
         // field you should change if you don't want the 'back' button to go
         // from that level to the chooser.
-        let cb = new LOL.LolCallback();
-        cb.onEvent = function () { game.doChooser(1); };
+        let cb = new LOL.LolCallback(function () { game.doChooser(1); });
         LOL.Control.addCallbackControl(384, 352, 190, 115, "", cb, game);
 
-        //         // This is the Help button... it switches to the first screen of the
-        //         // help system
-        //         Control.addCallbackControl(96, 186, 160, 80, "", new LolCallback() {
-        //             public void onEvent() {
-        //                 Lol.doHelp(1);
-        //             }
-        //         });
+        // This is the Help button... it switches to the first screen of the
+        // help system
+        LOL.Control.addCallbackControl(96, 186, 160, 80, "", new LOL.LolCallback(function () { game.doHelp(1); }), game);
 
-        //         // This is the Quit button
-        //         Control.addCallbackControl(726, 186, 138, 78, "", new LolCallback() {
-        //             public void onEvent() {
-        //                 Lol.doQuit();
-        //             }
-        //         });
+        // This is the Quit button
+        LOL.Control.addCallbackControl(726, 186, 138, 78, "", new LOL.LolCallback(function () { game.doQuit(); }), game);
 
         //         // Mute button is a tad tricky... we'll do it as an obstacle
         //         Obstacle o = Obstacle.makeAsBox(45, 0, 2.5f, 2.5f, "");

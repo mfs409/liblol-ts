@@ -22,6 +22,7 @@ module LOL {
             hammertime.on("pinch", function (ev) { console.log("PINCH"); });
             hammertime.on("rotate", function (ev) { console.log("ROTATE"); });
 
+            // TODO: need to move code to a function, and need to translate to world coordinates too.
             elt.addEventListener("touchstart", function (e) { Util.message("Screen Coordinates", e.changedTouches[0].clientX + ", " + e.changedTouches[0].clientY, that.game); e.preventDefault(); });
             elt.addEventListener("touchend", function (e) { console.log("screen release"); e.preventDefault(); });
             elt.addEventListener("mousedown", function (e) { Util.message("Screen Coordinates", e.clientX + ", " + e.clientY, that.game); e.preventDefault(); });

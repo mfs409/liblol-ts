@@ -69,6 +69,14 @@ module LOL {
          * This code will run in response to the event for which the callback is
          * registered
          */
-        public onEvent: Function = null;
+        public onEvent: () => void = null;
+
+        /**
+         * To construct a LolCallback, provide the function to execute when the
+         * callback is invoked
+         */
+        constructor(onEvent: () => void) {
+            this.onEvent = onEvent;
+        }
     }
 }
