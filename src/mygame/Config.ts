@@ -94,7 +94,7 @@ class GameConfig extends LOL.Config {
         // The code for building the playable levels
         // this.levelBuilder = 
         this.splashBuilder = new Splash();
-        // this.chooserBuilder =
+        this.chooserBuilder = new Chooser();
         // this.helpBuilder =
         // this.storeBuilder =
     }
