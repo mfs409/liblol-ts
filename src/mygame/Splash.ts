@@ -43,8 +43,8 @@ class Splash implements LOL.ScreenManager {
         // This is the Quit button
         LOL.Control.addCallbackControl(726, 186, 138, 78, "", new LOL.LolCallback(function () { game.doQuit(); }), game);
 
-        //         // Mute button is a tad tricky... we'll do it as an obstacle
-        //         Obstacle o = Obstacle.makeAsBox(45, 0, 2.5f, 2.5f, "");
+        // Mute button is a tad tricky... we'll do it as an obstacle
+        let o = LOL.Obstacle.makeAsBox(45, 29, 3, 3, "", game);
         //         // figure out which image to use for the obstacle based on the current
         //         // volume state
         //         if (Lol.getVolume()) {

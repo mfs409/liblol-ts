@@ -34,7 +34,13 @@ module LOL {
         /**
          * The physics world in which all actors exits
          */
-        private world: PhysicsType2d.Dynamics.World = null;
+        public world: PhysicsType2d.Dynamics.World = null;
+
+        /**
+         * A list of all actors, so that we can update their sprites whenever 
+         * the world advances
+         */
+        public actors: Actor[] = [];
 
         /**
          * Boundaries on the physics dimensions of the world
@@ -94,11 +100,9 @@ module LOL {
             //         // top, but that's probably not going to produce logical behavior
             //         Lol.sGame.mCurrentLevel.mTilt.handleTilt();
 
-            //         // Advance the physics world by 1/45 of a second.
-            //         //
-            //         // NB: in Box2d, This is the recommended rate for phones, though it
-            //         // seems like we should be using /delta/ instead of 1/45f
-            //         mWorld.step(1 / 45f, 8, 3);
+            // Advance the physics world by 1/60 of a second.
+            this.world.Step(1.0 / 60.0, 8, 3);
+            this.world.ClearForces();
 
             //         // now handle any events that occurred on account of the world movement
             //         // or screen touches
@@ -127,6 +131,24 @@ module LOL {
 
             //         // draw parallax backgrounds
             //         mBackground.renderLayers(mSpriteBatch, delta);
+
+            // Update actor sprite positions
+            let n = this.actors.length;
+            for (let i = 0; i < n; i++) {
+                let actor = this.actors[i];
+                if (actor.visible && actor.mVisible) {
+                    let body = actor.body;
+                    let position = body.GetPosition();
+                    let sprite = actor.image;
+                    // TODO: mapping will change once game doesn't fit in the 
+                    // PIXI container
+                    // TODO: need to do some pruning to hide off-screen stuff
+                    sprite.position.x = position.x * game.config.PIXELS_PER_METER;
+                    sprite.position.y = position.y * game.config.PIXELS_PER_METER;
+                    sprite.rotation = body.GetAngle();
+                }
+            }
+
 
             // Render the actors in order from z=-2 through z=2
             let layers: PIXI.Container[] = [null, null, null, null, null];

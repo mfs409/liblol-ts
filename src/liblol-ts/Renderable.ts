@@ -4,6 +4,9 @@ module LOL {
      * displayed on the screen to describe how they ought to be displayed. This
      * allows us, for example, to let a text item describe how its display value
      * should change over time.
+     * 
+     * Note: Renderable describes how to draw something on the screen.  Its 
+     *       dimensions should always be in pixels.
      *  
      * WARNING: Renderable is a low-level interface that allows actors, 
      *          controls, and displays to describe where, on screen, they should
@@ -46,7 +49,7 @@ module LOL {
         public image: PIXI.Sprite = null;
 
         /**
-         * Check if a point falls within this renderable.
+         * Check if a pixel falls within this renderable.
          */
         public contains(x: number, y: number): boolean {
             return x >= this.position.x && x <= this.position.x + this.dimensions.x && y >= this.position.y && y <= this.position.y + this.dimensions.y;
@@ -55,10 +58,10 @@ module LOL {
         /**
          * Create a Renderable image, that can be displayed on the screen
          * 
-         * @param x: the X coordinate of the top left corner, in meters
-         * @param y: the Y coordinate of the top left corner, in meters
-         * @param width: the width of the image, in meters
-         * @param height: the height of the image, in meters
+         * @param x: the X coordinate of the top left corner, in pixels
+         * @param y: the Y coordinate of the top left corner, in pixels
+         * @param width: the width of the image, in pixels
+         * @param height: the height of the image, in pixels
          * @param imgName: the name of the image file to use
          * @param game: the game whose playable level will show this image
          */
@@ -78,13 +81,13 @@ module LOL {
             if (found) {
                 this.image = new PIXI.Sprite(PIXI.Texture.fromFrame(game.config.assetFolder + imgName));
                 this.image.anchor.x = this.image.anchor.y = 0.5;
-                this.image.height = this.dimensions.y * game.config.PIXELS_PER_METER;
-                this.image.width = this.dimensions.x * game.config.PIXELS_PER_METER;
+                this.image.height = this.dimensions.y;
+                this.image.width = this.dimensions.x;
                 // Just in case the sprite doesn't end up having a physics body 
                 // attached to it, let's go ahead and set the x/y coordinates of
                 // its center point, based on the current position
-                this.image.x = (this.position.x + this.dimensions.x / 2) * game.config.PIXELS_PER_METER;
-                this.image.y = (this.position.y + this.dimensions.y / 2) * game.config.PIXELS_PER_METER;
+                this.image.x = (this.position.x + this.dimensions.x / 2);
+                this.image.y = (this.position.y + this.dimensions.y / 2);
                 this.visible = true;
             } else {
                 Util.message("ASSET ERROR", "file '" + imgName + "' not found", game);

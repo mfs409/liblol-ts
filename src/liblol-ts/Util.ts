@@ -126,6 +126,10 @@ module LOL {
          * Note: the order in which this is called relative to other actors will
          * determine whether they go under or over this picture.
          *
+         * TODO: Renderables only track coordinates in pixels, but this deals in 
+         *       meters... that's going to be a big problem when we start having 
+         *       large worlds...
+         * 
          * @param x:       X coordinate of bottom left corner in meters
          * @param y:       Y coordinate of bottom left corner in meters
          * @param width:   Width of the picture in meters
@@ -135,7 +139,7 @@ module LOL {
          *                 and 2. By default, everything goes to plane 0
          */
         public static drawPicture(x: number, y: number, width: number, height: number, imgName: string, zIndex: number, game: Lol): Renderable {
-            let pic = new Renderable(x, y, width, height, imgName, game);
+            let pic = new Renderable(x * game.config.PIXELS_PER_METER, y * game.config.PIXELS_PER_METER, width * game.config.PIXELS_PER_METER, height * game.config.PIXELS_PER_METER, imgName, game);
             pic.zIndex = zIndex;
             game.activeLevel.worldSprites.push(pic);
             return pic;
